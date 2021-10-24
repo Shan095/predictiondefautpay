@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<h1>
+    Bienvenu(e) sur le modèle de prédiction!
+</h1>
+<body>
+<center>
+    <h2>
+        Veuillez renseigner la valeur pour les 30 variables ci-dessous:
+    </h2>
+    <form method="POST">
+        <label>Amount of credit:</label>
+        <input type="number" name="amt_credit" placeholder="eg:10000"><br />
+        <label>Price of the goods:</label>
+        <input type="number" name="amt_goods_price" placeholder="eg:12000"><br />
+        <label>Amount of annuity:</label>
+        <input type="number" name="amt_annuity" placeholder="eg:12000"><br />
+        <label>Amount of total income:</label>
+        <input type="number" name="amt_income_total" placeholder="eg:12000"><br />
+        <label>Lenth of the credit in year:</label>
+        <input type="number" name="credit_length" placeholder="eg:25"><br />
+        <label>Other credits count:</label>
+        <input type="number" name="other_credits_count"placeholder="eg:0"><br />
+        <label>Id publish days:</label>
+        <input type="number" name="days_id_publish"placeholder="eg:25, don't leave empty"><br />
+        <label>Total income amount:</label>
+        <input type="number" name="amt_income_total"placeholder="eg:36000"><br />
+        <label>Days last phone change</label>
+        <input type="number" name="days_last_phone_change"placeholder="eg:100"><br />
+        <label>External source 1:</label>
+        <input type="number" name="ext_source_1"placeholder="eg:0.5"><br />
+        <label>External source 2:</label>
+        <input type="number" name="ext_source_2"placeholder="eg:0.5"><br />
+        <label>External source 3:</label>
+        <input type="number" name="ext_source_3"placeholder="eg:0.5"><br />
+        <label>Age of the client:</label>
+        <input type="number" name="age"placeholder="eg:25, don't leave empty"><br />
+        <label>Months employed of the client:</label>
+        <input type="number" name="months_employed"placeholder="eg:36, don't leave empty"><br />
+        <label>Ratio annuity income of the client:</label>
+        <input type="number" name="ratio_annuite_income"placeholder="eg:0.8"><br />
+        <label>Days registration of the client:</label>
+        <input type="number" name="days_registration"placeholder="eg:25, don't leave empty"><br />
+        <label>Relative population relative data:</label>
+        <input type="number" name="region_population_relative"placeholder="eg:0.01"><br />
+        <label>Income per person in the family of the client:</label>
+        <input type="number" name="income_per_person"placeholder="eg:8000"><br />
+        <label>Own car age of the client:</label>
+        <input type="number" name="own_car_age"placeholder="eg:25, don't leave empty"><br />
+        <label>Hour appr process start:</label>
+        <input type="number" name="hour_appr_process_start"placeholder="eg:7"><br />
+        <label>Amt req credit bureau year:</label>
+        <input type="number" name="amt_req_credit_bureau_year"placeholder="eg:25"><br />
+        <label>name_contract_type:</label>
+        <input type="number" name="name_contract_type"placeholder="eg:0 for CDD, 1 for CDI"><br />
+        <label>Sum bureau days credit:</label>
+        <input type="number" name="bureau_amt_credit_sum_sum"placeholder="eg:25000"><br />
+        <label>Region rating client w city:</label>
+        <input type="number" name="region_rating_client_w_city"placeholder="eg:2"><br />
+        <label>Count bureau amt credit sum overdue:</label>
+        <input type="number" name="bureau_amt_credit_sum_overdue_count"placeholder="eg:0"><br />
+        <label>Max bureau days credit enddate:</label>
+        <input type="number" name="bureau_days_credit_enddate_max"placeholder="eg:0"><br />
+        <label>Mean bureau days credit:</label>
+        <input type="number" name="bureau_days_credit_mean"placeholder="eg:0"><br />
+        <label>Education type:</label>
+        <select name="name_education_type"><br />
+        <option value="Secondary / secondary special">Secondary</option>
+        <option value="Higher education">Highereducation</option>
+        <option value="Incomplete Higher">IncompleteHigher</option>
+        <option value="Lower secondary">LowerSecondary</option>
+        <option value="Academic degree">Academicdegree</option>
+        </select><br />
+        <label>Gender Code of the client:</label>
+        <label>Organization type:</label>
+        <select name="organization_type"><br />
+            <option value="Insurance">Insurance</option>
+            <option value="Business Entity Type 3">Business Entity Type 3</option>
+            <option value="Transport: type 4">Transport: type 4</option>
+            <option value="XNA">XNA</option>
+            <option value="School">School</option>
+            <option value="Trade: type 7">Trade: type 7</option>
+            <option value="Industry: type 9">Industry: type 9</option>
+            <option value="Self-employed">Self-employed</option>
+            <option value="Advertising">Advertising</option>
+            <option value="Housing">Housing</option>
+            <option value="Security">Security</option>
+            <option value="Bank">Bank</option>
+            <option value="Business Entity Type 1">Business Entity Type 1</option>
+            <option value="Industry: type 11">Industry: type 11</option>
+            <option value="Construction">Construction</option>
+            <option value="Restaurant">Restaurant</option>
+            <option value="Industry: type 3">Industry: type 3</option>
+            <option value="Other">Other</option>
+            <option value="Agriculture">Agriculture</option>
+            <option value="Business Entity Type 2">Business Entity Type 2</option>
+            <option value="Government">Government</option>
+            <option value="Medicine">Medicine</option>
+            <option value="Industry: type 7">Industry: type 7</option>
+            <option value="Kindergarten">Kindergarten</option>
+            <option value="Trade: type 3">Trade: type 3</option>
+            <option value="Trade: type 2">Trade: type 2</option>
+            <option value="Services">Services</option>
+            <option value="Military">'Military</option>
+            <option value="Emergency">Emergency</option>
+            <option value="Postal">Postal</option>
+            <option value="Transport: type 3">Transport: type 3</option>
+            <option value="Security Ministries">Security Ministries</option>
+            <option value="Telecom">Telecom</option>
+            <option value="Police">Police</option>
+            <option value="Mobile">Mobile</option>
+            <option value="Culture">Culture</option>
+            <option value="Realtor">Realtor</option>
+            <option value="Cleaning">Cleaning</option>
+            <option value="Industry: type 2">Industry: type 2</option>
+            <option value="University">University</option>
+            <option value="Religion">Religion</option>
+        </select><br />
+        <input type="number" name="code_gender"placeholder="eg:0 for male, 1 for female"><br />
+        <label>Client profession type:</label>
+        <select name="occupation_type">
+            <option value="Laborers">Laborers</option>
+            <option value="Core staff">Core staff</option>
+            <option value="Accountants">Accountants</option>
+            <option value="Managers">Managers</option>
+            <option value="Drivers">Drivers</option>
+            <option value="Sales staff">Sales staff</option>
+            <option value="Cleaning staff">Cleaning staff</option>
+            <option value="Cooking staff">Cooking staff</option>
+            <option value="Private service staff">Private service staff</option>
+            <option value="Medicine staff">Medicine staff</option>
+            <option value="Security staff">Security staff</option>
+            <option value="High skill tech staff">High skill tech staff</option>
+            <option value="Waiters/barmen staff">Waiters/barmen staff</option>
+            <option value="Low-skill Laborers">Low-skill Laborers</option>
+            <option value="Realty agents">Realty agents</option>
+            <option value="Secretaries">Secretaries</option>
+            <option value="IT staff">IT staff</option>
+            <option value="HR staff">HR staff</option>
+        </select><br />
+        <label>Client income type:</label>
+        <select name="name_income_type">
+            <option value="Working">Working</option>
+            <option value="State servant">State servant</option>
+            <option value="Commercial associate">Commercial associate</option>
+            <option value="Pensioner">Pensioner</option>
+            <option value="Unemployed">Unemployed</option>
+            <option value="Student">Student</option>
+            <option value="Businessman">Businessman</option>
+            <option value="Maternity leave">Maternity leave</option>
+        </select><br />
+        <label>Client Family status:</label>
+        <select name="name_family_status">
+            <option value="Single / not married">Single / not married</option>
+            <option value="Married">Married</option>
+            <option value="Civil marriage">Civil marriage</option>
+            <option value="Widow">Widow</option>
+            <option value="Separated">Separated</option>
+            <option value="Unknown">Unknown</option>
+        </select><br />
+        <input type="submit" value="Envoyer le formulaire">
+
+</center>
+</body>
+</html>

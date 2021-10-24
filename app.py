@@ -3,12 +3,13 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 from flask import Flask, request, render_template
+import joblib
 from joblib import load
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
 app = Flask(__name__)
-model = load('catboost_model_30f_2.joblib')
+model = joblib.load('catboost_model_30f_2.joblib')
 
 
 @app.route('/', methods=['GET', 'POST'])  # une méthode de recevoir les données, à travers le serveur

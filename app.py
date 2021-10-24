@@ -9,7 +9,6 @@ from plotly.subplots import make_subplots
 
 app = Flask(__name__)
 model = load('catboost_model_30f_2.joblib')
-features=model.feature_names_
 
 
 @app.route('/', methods=['GET', 'POST'])  # une méthode de recevoir les données, à travers le serveur

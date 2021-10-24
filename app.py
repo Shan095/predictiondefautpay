@@ -7,6 +7,8 @@ import joblib
 from joblib import load
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
+import catboost
+from catboost import CatBoostClassifier
 
 app = Flask(__name__)
 model = joblib.load('catboost_model_30f_2.joblib')

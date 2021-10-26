@@ -1,1 +1,1 @@
-web: gunicorn api_flask:app --log-file -
+guinicorn --bind 0.0.0.0:5000 wsgi:app

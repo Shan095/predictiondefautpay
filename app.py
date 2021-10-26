@@ -118,14 +118,15 @@ def show_age():
         features_input=[ext_source_3, ext_source_2, credit_length, ext_source_1, age, days_employed, amt_goods_price, days_id_publish, name_education_type, amt_credit, amt_annuity, days_registration, days_last_phone_change, bureau_amt_credit_sum_sum, ratio_annuite_income, income_per_person, region_population_relative, own_car_age, occupation_type, other_credits_count, name_income_type, amt_income_total, organization_type, code_gender, name_family_status, hour_appr_process_start, amt_req_credit_bureau_year, name_contract_type, bureau_amt_credit_sum_overdue_count, region_rating_client_w_city]
         preds = model.predict_proba(features_input)
         #preds_as_str = str(preds[1])
-        draw_subplots(data,
+        fig=draw_subplots(data,
                       prediction=preds[1]*100,
                       months=month_employed,
                       ratio=ratio_annuite_income,
                       profession=occupation_type,
                       education=name_education_type,
                       family=name_family_status)
-        return render_template('model.html')
+        fig.write_html("templates/dashboard.html")
+        return render_template("dashboard.html")
 
 y_train = pd.read_csv('y_train_catboost.csv', sep=',')
 data['months_employed']=-data['days_employed']/12
@@ -179,7 +180,7 @@ def draw_subplots(data,prediction,months,ratio,profession,education,family):
                     mode="markers", marker=dict(size=5, color="red"),
                     showlegend=True,row=3,col=2)
     fig.update_layout(height=1000, width=1000, showlegend=True)
-    fig.show()
+    return fig
 
 
 if __name__ == "__main__":

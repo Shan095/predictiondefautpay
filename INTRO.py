@@ -18,8 +18,12 @@ app = Dash(__name__)
 df = pd.read_csv("X_train_catboost.csv")
 y_train = pd.read_csv("y_train_catboost.csv")
 train=pd.read_csv("application_train.csv")
+train['target']=train['TARGET'].replace({0:'zero',1:'one'})
 df=df.copy()
 df['target']=y_train['target']
+df['age']=-df['days_birth']/365
+df['years_employed']=-df['days_employed']/365
+df['credit_length']=df[df['credit_length']>0]['credit_length']
 data_profession=df.groupby(by='occupation_type')['target'].sum()
 data_education=df.groupby(by='name_education_type')['target'].sum()
 data_family=df.groupby(by='name_family_status')['target'].sum()
@@ -28,7 +32,7 @@ data_organisation=df.groupby(by='organization_type')['target'].sum()
 target_list=train['SK_ID_CURR'].unique()
 list_options=[]
 for i in target_list:
-    options={f"label": f"{i}", "value":  f"{i}"}
+    options={f"label": i, "value":  i}
     list_options.append(options)
 model = load('catboost_model_30f_2.joblib')
 
@@ -39,17 +43,10 @@ app.layout = html.Div([
     html.H1("Defaut payment analysis web application", style={'text-align': 'center'}),
     html.H2("Part I: Is the client an old client with us?", style={'text-align': 'left'}),
     html.Label("Please enter the client id if he/she has one"),
-    dcc.Dropdown(
-        id="input_box",
-        options=list_options,
-        multi=False,
-        value='id',
-        placeholder='Select education type',
-        style={'width': "40%"},
-    ),
+    dcc.Input(id="input_box", type="number", value=100003),
     html.Div(id='output_container', children=[]),
     html.Br(),
-    html.H2("Part II: If he/she is a new client, please enter the client's information here", style={'text-align': 'left'}),
+    html.H2("Part II: If he/she is a new client, please enter the client's information here:", style={'text-align': 'left'}),
     html.Label("Education type"),
     dcc.Dropdown(
                  id="slct_education",
@@ -137,6 +134,13 @@ app.layout = html.Div([
                  placeholder='Select gender',
                  style={'width': "40%"}
                  ),
+    html.Label("Age"),
+    dcc.Slider(id='age',
+               marks={i: '{}'.format(i) for i in range(0, 100,10)},
+               min=0,
+               max=100,
+               value=35
+               ),
     html.Label("Annual Income"),
     dcc.Slider(id='annual_income',
         marks={i: '{}'.format(i) for i in range(0, 100000,10000)},
@@ -144,6 +148,13 @@ app.layout = html.Div([
         max=100000,
         value=10000
     ),
+    html.Label("Credit Length"),
+    dcc.Slider(id='credit_length',
+               marks={i: '{}'.format(i) for i in range(0, 50,5)},
+               min=0,
+               max=50,
+               value=20
+               ),
     html.Label("Credit amount"),
     dcc.Slider(id='credit_amount',
         marks={i: '{}'.format(i) for i in range(0, 1000000,100000)},
@@ -151,10 +162,28 @@ app.layout = html.Div([
         max=1000000,
         value=100000
     ),
-
+    html.Label("Years employed"),
+    dcc.Slider(id='years_employed',
+               marks={i: '{}'.format(i) for i in range(0, 50,5)},
+               min=0,
+               max=40,
+               value=10
+               ),
     dcc.Graph(id='score_graph', figure={}),
-    dcc.Graph(id='education_graph', figure={})
-
+    dcc.Graph(id='education_graph', figure={}),
+    html.Label("Gender"),
+    dcc.Dropdown(id="slct_variable",
+                 options=[
+                     {"label": "Age", "value": 'age'},
+                     {"label": "Credit Length", "value": 'credit_length'},
+                     {"label": "Years employed", "value": 'years_employed'},
+                     {"label": "Credit Amount", "value": 'amt_credit'}],
+                 multi=False,
+                 value='credit_length',
+                 placeholder='Select numeric variable',
+                 style={'width': "40%"}
+                 ),
+    dcc.Graph(id='box_graph', figure={}),
 ])
 
 
@@ -163,7 +192,8 @@ app.layout = html.Div([
 @app.callback(
     [Output(component_id='output_container',component_property='children'),
      Output(component_id='score_graph',component_property='figure'),
-     Output(component_id='education_graph',component_property='figure')],
+     Output(component_id='education_graph',component_property='figure'),
+     Output(component_id='box_graph',component_property='figure')],
     [Input(component_id='input_box', component_property='value'),
      Input(component_id='slct_education', component_property='value'),
      Input(component_id='slct_income_type', component_property='value'),
@@ -171,20 +201,22 @@ app.layout = html.Div([
      Input(component_id='slct_profession_type', component_property='value'),
      Input(component_id='slct_organization_type', component_property='value'),
      Input(component_id='slct_gender', component_property='value'),
+     Input(component_id='age', component_property='value'),
      Input(component_id='annual_income', component_property='value'),
-     Input(component_id='credit_amount', component_property='value')]
+     Input(component_id='credit_length', component_property='value'),
+     Input(component_id='credit_amount', component_property='value'),
+     Input(component_id='years_employed', component_property='value'),
+     Input(component_id='slct_variable', component_property='value')]
 )
 def update_output(client_id,education, income_type,family_status,profession,organisation, gender,
-                  annual_income,credit_amount):
+                  age,annual_income,credit_length,credit_amount,years_employed,variable):
+
     dff=train[train['SK_ID_CURR']==client_id]
-    record_result=dff['TARGET'].values
-    if record_result is None:
-        raise dash.exceptions.PreventUpdate
-    elif record_result==1:
-        result_str="This client has defaut payment history! He/she is a risky client!"
-
-
-    features_input=[1, 1, 1, 1, 1, 1, annual_income, 1, education, credit_amount, 1, 1,
+    result= "This client has {} defaut payment history!".format(dff['target'].values)
+    #result_str=f"This client has {record} defaut payment history!"
+    age=-(age*365)
+    years_employed=-(years_employed/365)
+    features_input=[1, 1,credit_length, 1, age, years_employed, annual_income, 1, education, credit_amount, 1, 1,
                     1, 1, 1, 1, 1, 1, profession, 1, income_type, 1, organisation,
                     gender, family_status, 1, 1, 1, 1, 1]
     preds = model.predict_proba(features_input)
@@ -222,8 +254,9 @@ def update_output(client_id,education, income_type,family_status,profession,orga
             width=1) )), 1, 1)
     figure3.append_trace(go.Scatter(x=x, y=y_per,mode='lines+markers',line_color='rgb(128, 0, 128)'), 2, 1)
     #figure3.update_layout(height=500, width=800)
-    return result_str,figure2,figure3
-
+    figure4=px.box(x=df['target'],y=df[variable],labels={'x':'Target (0 stands for no defaut, 1 stands for defaut)',
+                                                         'y':'Distribution of '+variable})
+    return result,figure2,figure3,figure4
 
 if __name__ == '__main__':
     app.run_server(debug=True)
